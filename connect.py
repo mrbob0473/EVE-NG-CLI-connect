@@ -24,7 +24,7 @@ def Print_Usage():
 	print("This command line tool can help EVE-NG users list nodes for a lab; and connect to those running lab devices.\n")
 	print("Parameters:")
 	print("Note: Mandatory arguments to long options are mandatory for short options too.")
-	print("-a, --all\t\t\tConnect all running nodes in the lab specified by -b or --lab parameter.")
+	print("-a, --all\t\t\tConnect all running nodes in the lab specified by -b or --lab parameter.  When using this paramter, the command is required to run inside a tmux session.")
 	print("-b, --lab=<lab>\t\t\tSpecify the name of the lab the command is targeting for.")
 	print("-c, --cache\t\t\tTo get the information about the lab nodes (devices) from the cache file instead of calling API.  (Calling API will log the user out of the WebGUI session.)")
 	print("-g, --gateway=<gateway>\t\tTo specify the IP address of the API gateway.  The default value is 127.0.0.1.")
@@ -194,6 +194,10 @@ if __name__ == '__main__':
 
 	if connectNode:
 		if connectAllNodes:
-			Connect_All_Nodes(nodes, noTmux)
+			if Is_TMUX():
+				Connect_All_Nodes(nodes, noTmux)
+			else:
+				print("Error: To connect to all nodes, please run the command inside a tmux session!")
+				sys.exit(4)
 		else:
 			Connect_Node(nodes, connectHostname, noTmux)

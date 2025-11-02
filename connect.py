@@ -55,6 +55,7 @@ def API_GetLabDevicePorts(apiSession, apiURL, labName):
 def Update_Cache(apiURL, apiUserName, apiPassword, labName, cacheFile):
 	error = False
 	apiSession = requests.Session()
+	apiSession.verify = False
 	apiCallStatusCode=API_Login(apiSession, apiURL, apiUserName, apiPassword)
 	if apiCallStatusCode != 200:
 		eprint("Error: Failed to login to the API")
